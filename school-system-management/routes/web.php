@@ -8,7 +8,7 @@ use App\Livewire\Finance;
 use App\Livewire\TeacherPortal;
 use App\Livewire\StudentPortal;
 use App\Livewire\ParentPortal;
-use App\Livewire\HumanResource;
+use App\Livewire\HRD;
 use App\Livewire\Dormitory;
 use App\Livewire\Clinic;
 
@@ -19,6 +19,6 @@ Route::get('/finance', Finance::class)->name('finance');
 Route::get('/teacher-portal', TeacherPortal::class)->name('teacher-portal');
 Route::get('/student-portal', StudentPortal::class)->name('student-portal');
 Route::get('/parent-portal', ParentPortal::class)->name('parent-portal');
-Route::get('/human-resource', HumanResource::class)->name('human-resource');
+Route::get('/human-resource', HRD::class)->name('human-resource');
 Route::get('/dormitory', Dormitory::class)->name('dormitory');
 Route::get('/clinic', Clinic::class)->name('clinic');
