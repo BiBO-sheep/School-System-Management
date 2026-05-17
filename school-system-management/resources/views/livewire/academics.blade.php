@@ -72,19 +72,17 @@
                         @forelse($students as $student)
                             <tr class="hover:bg-gray-50 transition-colors group">
                                 <td class="px-6 py-4 font-medium text-gray-900 flex items-center">
-                                    <div class="h-8 w-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold mr-3">
-                                        {{ $student['avatar'] }}
-                                    </div>
-                                    {{ $student['name'] }}
+                                    <img class="h-8 w-8 rounded-full mr-3" src="https://ui-avatars.com/api/?name={{ urlencode($student->user->name) }}&color=4f46e5&background=e0e7ff" alt="{{ $student->user->name }}">
+                                    {{ $student->user->name }}
                                 </td>
-                                <td class="px-6 py-4 text-gray-500 font-mono text-xs">{{ $student['id'] }}</td>
+                                <td class="px-6 py-4 text-gray-500 font-mono text-xs">{{ $student->nisn }}</td>
                                 <td class="px-6 py-4 text-gray-500">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                                        {{ $student['grade'] }}
+                                        {{ $student->schoolClass->name ?? 'Unassigned' }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500">{{ $student['gender'] }}</td>
-                                <td class="px-6 py-4 text-gray-500">{{ $student['contact'] }}</td>
+                                <td class="px-6 py-4 text-gray-500">{{ $student->gender }}</td>
+                                <td class="px-6 py-4 text-gray-500">{{ $student->phone }}</td>
                                 <td class="px-6 py-4 text-right">
                                     <button class="text-gray-400 hover:text-indigo-600 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Profile">
                                         <i class="fas fa-eye"></i>
@@ -109,12 +107,8 @@
                 </table>
             </div>
             
-            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                <span class="text-sm text-gray-500">Showing {{ count($students) }} students</span>
-                <div class="flex space-x-1">
-                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>Previous</button>
-                    <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>Next</button>
-                </div>
+            <div class="px-6 py-4 border-t border-gray-100">
+                {{ $students->links() }}
             </div>
         </div>
     </div>
@@ -159,37 +153,34 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
                     <tbody class="divide-y divide-gray-100">
-                        @foreach(collect($students)->take(4) as $index => $student)
+                        @foreach(collect($students->items())->take(4) as $index => $student)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 font-medium text-gray-900 w-1/3">
-                                {{ $student['name'] }}
-                                <div class="text-xs text-gray-500 font-normal mt-0.5">{{ $student['id'] }}</div>
+                                {{ $student->user->name }}
+                                <div class="text-xs text-gray-500 font-normal mt-0.5">{{ $student->nisn }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex space-x-4">
                                     <label class="inline-flex items-center cursor-pointer">
-                                        <input type="radio" name="attendance_{{ $student['id'] }}" value="present" class="peer sr-only" checked>
+                                        <input type="radio" name="attendance_{{ $student->id }}" value="present" class="peer sr-only" checked>
                                         <div class="px-3 py-1.5 rounded-md border border-gray-200 text-gray-600 peer-checked:bg-green-50 peer-checked:border-green-500 peer-checked:text-green-700 transition-all text-xs font-medium hover:bg-gray-50">
                                             Present
                                         </div>
                                     </label>
                                     
-                                    <label class="inline-flex items-center cursor-pointer">
-                                        <input type="radio" name="attendance_{{ $student['id'] }}" value="late" class="peer sr-only">
+                                        <input type="radio" name="attendance_{{ $student->id }}" value="late" class="peer sr-only">
                                         <div class="px-3 py-1.5 rounded-md border border-gray-200 text-gray-600 peer-checked:bg-yellow-50 peer-checked:border-yellow-400 peer-checked:text-yellow-700 transition-all text-xs font-medium hover:bg-gray-50">
                                             Late
                                         </div>
                                     </label>
 
-                                    <label class="inline-flex items-center cursor-pointer">
-                                        <input type="radio" name="attendance_{{ $student['id'] }}" value="absent" class="peer sr-only">
+                                        <input type="radio" name="attendance_{{ $student->id }}" value="absent" class="peer sr-only">
                                         <div class="px-3 py-1.5 rounded-md border border-gray-200 text-gray-600 peer-checked:bg-red-50 peer-checked:border-red-500 peer-checked:text-red-700 transition-all text-xs font-medium hover:bg-gray-50">
                                             Absent
                                         </div>
                                     </label>
                                     
-                                    <label class="inline-flex items-center cursor-pointer">
-                                        <input type="radio" name="attendance_{{ $student['id'] }}" value="excused" class="peer sr-only">
+                                        <input type="radio" name="attendance_{{ $student->id }}" value="excused" class="peer sr-only">
                                         <div class="px-3 py-1.5 rounded-md border border-gray-200 text-gray-600 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 transition-all text-xs font-medium hover:bg-gray-50">
                                             Excused
                                         </div>

@@ -45,8 +45,10 @@ class LoginView extends StatelessWidget {
                 ),
                 const SizedBox(height: 48),
 
-                // Credential Fields
-                TextField(
+                // Form Layout
+                TextFormField(
+                  controller: controller.emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: "Email / NIM / NIP",
                     prefixIcon: const Icon(Icons.person_outline),
@@ -60,7 +62,8 @@ class LoginView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                TextField(
+                TextFormField(
+                  controller: controller.passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -74,68 +77,43 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
 
-                // Role Selection & Loading State
+                // Primary Login Button
                 Obx(() {
-                  if (controller.isLoading.value) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.indigo),
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: ElevatedButton(
+                      onPressed: controller.isLoading.value ? null : controller.login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigo,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
                       ),
-                    );
-                  }
-                  
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _buildLoginButton(
-                        label: "Login as Student",
-                        role: 'student',
-                        isPrimary: true,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildLoginButton(
-                        label: "Login as Teacher",
-                        role: 'teacher',
-                        isPrimary: false,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildLoginButton(
-                        label: "Login as Parent",
-                        role: 'parent',
-                        isPrimary: false,
-                      ),
-                    ],
+                      child: controller.isLoading.value
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                strokeWidth: 2.5,
+                              ),
+                            )
+                          : const Text(
+                              "Sign In",
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                    ),
                   );
                 }),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLoginButton({
-    required String label,
-    required String role,
-    required bool isPrimary,
-  }) {
-    return ElevatedButton(
-      onPressed: () => controller.login(role),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isPrimary ? Colors.indigo : Colors.indigo.shade50,
-        foregroundColor: isPrimary ? Colors.white : Colors.indigo,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        elevation: 0,
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
     );
   }
